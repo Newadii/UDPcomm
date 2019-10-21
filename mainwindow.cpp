@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QNetworkInterface>
+#include <QFileDialog>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -70,15 +71,28 @@ void MainWindow::on_sendMsgBtn_clicked()
 
 void MainWindow::on_setFragBtn_clicked()
 {
-    m_socket->setFragSize(ui->fragSizeEdit->text().toUInt());
+    m_socket->setFragSize(ui->fragSizeEdit->text().toInt());
 }
 
 void MainWindow::on_fileBtn_clicked()
 {
-
+    QString filePath(QFileDialog::getOpenFileName(this, "Select file", "/home/"));
+    QString fileName(QFileInfo(filePath).fileName());
+    sendToDebug("File to send: " + fileName);
+    m_selectedFile = filePath;
+    ui->labelFileName->setText(fileName);
 }
 
 void MainWindow::on_sendFileBtn_clicked()
 {
+    m_socket->sendFile(m_selectedFile);
+}
 
+void MainWindow::on_checkBox_stateChanged(int checked)
+{
+    if (checked == Qt::CheckState::Checked) {
+        m_socket->corruptFrag(true);
+    } else {
+        m_socket->corruptFrag(false);
+    }
 }

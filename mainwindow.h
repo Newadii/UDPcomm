@@ -32,8 +32,12 @@ private slots:
     void on_sendFileBtn_clicked();
     void on_stopServerBtn_clicked();
 
+    void on_checkBox_stateChanged(int arg1);
+
 private:
     Ui::MainWindow *ui;
     Socket *m_socket;
+
+    QString m_selectedFile;
 };
 #endif // MAINWINDOW_H
