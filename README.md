@@ -1,2 +1,2 @@
-#School project
+# School project
 UDP communicator in Qt framework
